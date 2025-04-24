@@ -1,0 +1,136 @@
+USE z1986038;
+
+DROP TABLE IF EXISTS Product_Order;
+DROP TABLE IF EXISTS `Order`;
+DROP TABLE IF EXISTS Contains;
+DROP TABLE IF EXISTS Cart;
+DROP TABLE IF EXISTS Shipping_Location;
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS Product;
+
+CREATE TABLE User (
+Username VARCHAR(255) PRIMARY KEY,
+Password VARCHAR(255) NOT NULL,
+Email VARCHAR(255) NOT NULL,
+First_Name VARCHAR(255) NOT NULL,
+Last_Name VARCHAR(255) NOT NULL);
+
+CREATE TABLE Cart (
+Cart_Number INT PRIMARY KEY AUTO_INCREMENT,
+Username VARCHAR(255) NOT NULL,
+Cart_Total DECIMAL(10,2),
+FOREIGN KEY (Username) REFERENCES User(Username));
+
+CREATE TABLE Product (
+Product_ID INT PRIMARY KEY AUTO_INCREMENT,
+Name VARCHAR(255) NOT NULL,
+Price DECIMAL(10,2) NOT NULL,
+In_Stock INT NOT NULL);
+
+CREATE TABLE Contains (
+Cart_Number INT NOT NULL,
+Product_ID INT NOT NULL,
+Quantity INT NOT NULL,
+PRIMARY KEY (Cart_Number, Product_ID),
+FOREIGN KEY (Cart_Number) REFERENCES Cart(Cart_Number),
+FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID));
+
+CREATE TABLE Shipping_Location(
+Loc_ID INT PRIMARY KEY AUTO_INCREMENT,
+Username VARCHAR(255) NOT NULL,
+Shipping_Addr VARCHAR(255) NOT NULL,
+Apt_Suite VARCHAR(255),
+Zip INT NOT NULL,
+City VARCHAR(255) NOT NULL,
+State VARCHAR(255) NOT NULL,
+FOREIGN KEY (Username) REFERENCES User(Username));
+
+CREATE TABLE `Order` (
+Order_Number INT PRIMARY KEY AUTO_INCREMENT,
+Username VARCHAR(255) NOT NULL,
+Loc_ID INT NOT NULL,
+Order_Total DECIMAL(10,2),
+Status VARCHAR(255),
+Order_DateTime DATETIME NOT NULL,
+FOREIGN KEY (Username) REFERENCES User(Username),
+FOREIGN KEY (Loc_ID) REFERENCES Shipping_Location(Loc_ID));
+
+CREATE TABLE Product_Order(
+Product_ID INT,
+Order_Number INT,
+Quantity INT NOT NULL,
+PRIMARY KEY (Product_ID, Order_Number),
+FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID),
+FOREIGN KEY (Order_Number) REFERENCES `Order`(Order_Number));
+
+INSERT INTO Product (Name, Price, In_Stock) VALUES
+('Rocket Launcher', 200.00, 10),
+('Casio Watch', 300.00, 50),
+('Digital Camera', 500.00, 100),
+('Walkman', 150.99, 5),
+('iPhone 16', 799.99, 20),
+('USB Drive', 10.99, 999),
+('Bucket Hat', 24.99, 60),
+('USB-C to USB-C Cable', 19.99, 43),
+('USB-C to USB-A Cable', 9.99, 67),
+('USB-A to USB-C Adapter', 5.49, 2),
+('Reusable Bag', 2.00, 1000),
+('Water Bottle', 1.00, 2000),
+('PS5 Controller', 69.99, 5),
+('XBOX Controller', 59.99, 7),
+('Scotch Tape', 4.99, 9),
+('Packing Tape', 6.99, 89),
+('USB Mouse', 29.99, 13),
+('Bluetooth Mouse', 39.99, 23),
+('Gaming Laptop', 999.99, 2),
+('Desktop PC', 1200.00, 5);
+
+INSERT INTO User VALUES
+('THale222', '123', 'test@gmail.com', 'Thomas', 'Hale'),
+('SaltNPepper', '123', 'fake@gmail.com', 'Bob', 'Croft'),
+('MyUser10', '123', 'these_arent_real@gmail.com', 'Greg', 'Dinsel'),
+('BoringName', '123', 'Maybe_they_Are@gmail.com', 'Scott', 'Pratt'),
+('PBJelly23', '123', 'Anyway@gmail.com', 'Preston', 'Belly');
+
+INSERT INTO Shipping_Location (Username, Shipping_Addr, Apt_Suite, Zip, City, State) VALUES
+('THale222', '123 market st.', '', 12345, 'Florence', 'PA'),
+('SaltNPepper', '33 Round ct.', 'Apt 23', 45832, 'Downs', 'IL'),
+('MyUser10', '24 First st.', '', 37964, 'Albuquerque', 'NM'),
+('BoringName', '12 Second ave.', 'Apt 1', 23954, 'Kenosha', 'WI'),
+('PBJelly23', '1 Maria ct.', '', 34278, 'Waverly', 'IA');
+
+INSERT INTO `Order` (Loc_ID, Username, Order_Total, Status, Order_DateTime) VALUES
+(1, 'THale222', 0.00, 'Created', '2024-02-28 18:24:05'),
+(2, 'SaltNPepper', 0.00, 'Created', '2024-01-10 10:10:10'),
+(3, 'MyUser10', 0.00, 'Created', '2024-03-13 12:00:15'),
+(4, 'BoringName', 0.00, 'Created', '2024-04-20 09:13:00'),
+(5, 'PBJelly23', 0.00, 'Created', '2025-01-05 08:20:32');
+
+INSERT INTO Product_Order VALUES
+(1, 1, 2),
+(2, 1, 1);
+
+UPDATE `Order` SET Order_Total = 700.00, Status = 'Complete' WHERE Order_Number = 1;
+
+INSERT INTO Product_Order VALUES
+(3, 2, 3);
+
+UPDATE `Order` SET Order_Total = 1500.00, Status = 'Shipped' WHERE Order_Number = 2;
+
+INSERT INTO Product_Order VALUES
+(5, 3, 2),
+(6, 3, 5),
+(10, 3, 1);
+
+UPDATE `Order` SET Order_Total = 1660.42, Status = 'Complete' WHERE Order_Number = 3;
+
+INSERT INTO Product_Order VALUES
+(20, 4, 1);
+
+UPDATE `Order` SET Order_Total = 1200.00, Status = 'Complete' WHERE Order_Number = 4;
+
+INSERT INTO Product_Order VALUES
+(16, 5, 10),
+(18, 5, 20);
+
+UPDATE `Order` SET Order_Total = 869.70, Status = 'Shipping' WHERE Order_Number = 5;
