@@ -6,7 +6,8 @@
 *.ko
 *.obj
 *.elf
-db_connect.php
+
+php/db_connect.php
 
 # Linker output
 *.ilk
