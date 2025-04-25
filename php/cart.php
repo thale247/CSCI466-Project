@@ -1,22 +1,53 @@
 <!doctype html>
 <html>
 
-<head>
-    <title>Viewing Cart</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-</head>
 
-<body>
-    <nav class="nav navbar-dark bg-dark d-flex align-items-center" style="height:75px;">
-        <a class="navbar-brand" href="#" style="padding:20px;">Online Parts Store</a>
-        <a class="nav-link text-secondary" href="/index.php" style="padding:20px;">Shop For Parts</a>
-        <a class="nav-link text-secondary" href="#" style="padding:20px;">Inventory</a>
-        <div class="ml-auto">
-            <a class="nav-link active" href="#" style="padding:20px;color:blue;">View Cart</a>
-        </div>
-    </nav>
+
+<?php
+include 'db_connect.php';
+include 'header.php';
+session_start();
+
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
+    $product_id = $_POST['product_id'];
+    $quantity = $_POST['quantity'];
+    if (isset($_SESSION['cart'][$product_id])) {
+        $_SESSION['cart'][$product_id] += $quantity;
+    } else {
+        $_SESSION['cart'][$product_id] = $quantity;
+    }
+}
+
+include 'includes/header.php';
+echo "<h1>Your Cart</h1>";
+if (empty($_SESSION['cart'])) {
+    echo "<p>Your cart is empty.</p>";
+} else {
+    echo "<form method='post' action='checkout.php'>";
+    $total = 0;
+    foreach ($_SESSION['cart'] as $id => $qty) {
+        $stmt = $pdo->prepare("SELECT * FROM Product WHERE Product_ID = ?");
+        $stmt->execute([$id]);
+        $product = $stmt->fetch();
+        $subtotal = $product['Price'] * $qty;
+        $total += $subtotal;
+        echo "<div>
+                <h2>{$product['Name']}</h2>
+                <p>Quantity: $qty</p>
+                <p>Subtotal: \${$subtotal}</p>
+              </div>";
+    }
+    echo "<p>Total: \${$total}</p>
+          <input type='submit' value='Proceed to Checkout'>
+          </form>";
+}
+
+?>
+
 </body>
 
 </html>
