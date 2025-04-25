@@ -34,19 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (isset($_POST['remove'])) {
         $stmt = $pdo->prepare("DELETE FROM Contains WHERE Cart_Number = ? AND Product_ID = ?");
         $stmt->execute([$cartNumber, $productId]);
-    } elseif (isset($_POST['add_to_cart'])) {
-        $checkStmt = $pdo->prepare("SELECT Quantity FROM Contains WHERE Cart_Number = ? AND Product_ID = ?");
-        $checkStmt->execute([$cartNumber, $productId]);
-
-        if ($row = $checkStmt->fetch()) {
-            $newQuantity = $row['Quantity'] + $quantity;
-            $updateStmt = $pdo->prepare("UPDATE Contains SET Quantity = ? WHERE Cart_Number = ? AND Product_ID = ?");
-            $updateStmt->execute([$newQuantity, $cartNumber, $productId]);
-        } else {
-            $insertStmt = $pdo->prepare("INSERT INTO Contains (Cart_Number, Product_ID, Quantity) VALUES (?, ?, ?)");
-            $insertStmt->execute([$cartNumber, $productId, $quantity]);
-        }
-    }
+    } 
 
     // Update cart total
     $totalStmt = $pdo->prepare("SELECT SUM(p.Price * c.Quantity) FROM Contains c JOIN Product p ON c.Product_ID = p.Product_ID WHERE c.Cart_Number = ?");
@@ -56,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $updateCartTotal->execute([$newTotal, $cartNumber]);
 }
 
-$stmt = $pdo->prepare("SELECT p.Product_ID, p.Name, p.Price, ct.Quantity FROM Product p JOIN Contains ct ON p.Product_ID = ct.Product_ID WHERE ct.Cart_Number = ?");
+$stmt = $pdo->prepare("SELECT p.Product_ID, p.Name, p.Price, ct.Quantity, p.In_Stock FROM Product p JOIN Contains ct ON p.Product_ID = ct.Product_ID WHERE ct.Cart_Number = ?");
 $stmt->execute([$cartNumber]);
 $items = $stmt->fetchAll();
 ?>
@@ -109,7 +97,7 @@ $items = $stmt->fetchAll();
                         <td>
                             <form method="POST" class="form-inline">
                                 <input type="hidden" name="product_id" value="<?= $item['Product_ID'] ?>">
-                                <input type="number" class="form-control mr-2" name="quantity" value="<?= $item['Quantity'] ?>" min="1" style="width: 70px;">
+                                <input type="number" class="form-control mr-2" name="quantity" value="<?= $item['Quantity'] ?>" min="1" max="<?= $item['In_Stock'] ?>" style="width: 70px;">
                                 <button type="submit" name="update" class="btn btn-sm btn-outline-primary mr-1">Update</button>
                                 <button type="submit" name="remove" class="btn btn-sm btn-outline-danger">Remove</button>
                             </form>
