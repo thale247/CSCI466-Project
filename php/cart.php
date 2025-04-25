@@ -65,58 +65,62 @@ $items = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <title>Your Cart</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" 
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" 
+        crossorigin="anonymous">
 </head>
 <body>
-<main>
-    <header>
-        <nav class="nav navbar-dark bg-dark d-flex align-items-center" style="height:75px;">
-            <a class="navbar-brand" href="index.php" style="padding:20px;">Online Parts Store</a>
-            <a class="nav-link active text-light" href="index.php" style="padding:20px;">Shop For Parts</a>
-            <!-- Navbar link name is temporary. Not sure what pages we need yet -->
-            <!-- <a class="nav-link text-secondary" href="inventory.php" style="padding:20px;">Inventory</a> -->
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="index.php">Online Parts Store</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="index.php">Shop For Parts</a>
             <?php if (isset($_SESSION['username'])): ?>
-                <a class="nav-link active text-light" href="/php/orders.php">Orders</a>
-                <a class="nav-link active text-light" href="/php/sign_out.php">Sign Out</a>
-                <div class="ml-auto">
-                <a class="nav-link" href="/php/cart.php" style="padding:20px;">View Cart</a>
-            </div>
+                <a class="nav-item nav-link" href="/php/orders.php">Orders</a>
+                <a class="nav-item nav-link" href="/php/sign_out.php">Sign Out</a>
+                <a class="nav-item nav-link" href="/php/cart.php">View Cart</a>
             <?php else: ?>
-                <a class="nav-link active text-light" href="/php/login.php">Login</a>
+                <a class="nav-item nav-link" href="/php/login.php">Login</a>
             <?php endif; ?>
+        </div>
+    </nav>
+</header>
 
-        </nav>
-    </header>
-    <h1>Your Shopping Cart</h1>
+<main class="container mt-5">
+    <h1 class="mb-4">Your Shopping Cart</h1>
+
     <?php if (count($items) === 0): ?>
-        <p>Your cart is empty.</p>
+        <div class="alert alert-info">Your cart is empty.</div>
     <?php else: ?>
-        <table>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Actions</th>
-                <th>Total</th>
-            </tr>
-            <?php foreach ($items as $item): ?>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
                 <tr>
-                    <td><?= htmlspecialchars($item['Name']) ?></td>
-                    <td>$<?= number_format($item['Price'], 2) ?></td>
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="product_id" value="<?= $item['Product_ID'] ?>">
-                            <input type="number" name="quantity" value="<?= $item['Quantity'] ?>" min="1">
-                            <input type="submit" name="update" value="Update">
-                            <input type="submit" name="remove" value="Remove">
-                        </form>
-                    </td>
-                    <td>$<?= number_format($item['Quantity'] * $item['Price'], 2) ?></td>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th style="width: 220px;">Quantity</th>
+                    <th>Total</th>
                 </tr>
-            <?php endforeach; ?>
+            </thead>
+            <tbody>
+                <?php foreach ($items as $item): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($item['Name']) ?></td>
+                        <td>$<?= number_format($item['Price'], 2) ?></td>
+                        <td>
+                            <form method="POST" class="form-inline">
+                                <input type="hidden" name="product_id" value="<?= $item['Product_ID'] ?>">
+                                <input type="number" class="form-control mr-2" name="quantity" value="<?= $item['Quantity'] ?>" min="1" style="width: 70px;">
+                                <button type="submit" name="update" class="btn btn-sm btn-outline-primary mr-1">Update</button>
+                                <button type="submit" name="remove" class="btn btn-sm btn-outline-danger">Remove</button>
+                            </form>
+                        </td>
+                        <td>$<?= number_format($item['Quantity'] * $item['Price'], 2) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
         </table>
-        <form method="get" action="checkout.php">
-            <input type="submit" value="Proceed to Checkout">
+        <form method="get" action="checkout.php" class="text-right">
+            <button type="submit" class="btn btn-success">Proceed to Checkout</button>
         </form>
     <?php endif; ?>
 </main>

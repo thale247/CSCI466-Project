@@ -19,40 +19,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
 </head>
 <body>
-<main>
 <header>
-<nav class="nav navbar-dark bg-dark d-flex align-items-center" style="height:75px;">
-        <a class="navbar-brand" href="index.php" style="padding:20px;">Online Parts Store</a>
-        <a class="nav-link active text-light" href="index.php" style="padding:20px;">Shop For Parts</a>
-        <!-- Navbar link name is temporary. Not sure what pages we need yet -->
-        <!-- <a class="nav-link text-secondary" href="inventory.php" style="padding:20px;">Inventory</a> -->
-        <?php if (isset($_SESSION['username'])): ?>
-            <a class="nav-link active text-light" href="/php/orders.php">Orders</a>
-            <a class="nav-link active text-light" href="/php/sign_out.php">Sign Out</a>
-            <div class="ml-auto">
-            <a class="nav-link" href="/php/cart.php" style="padding:20px;">View Cart</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="index.php">Online Parts Store</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="index.php">Shop For Parts</a>
+            <?php if (isset($_SESSION['username'])): ?>
+                <a class="nav-item nav-link" href="/php/orders.php">Orders</a>
+                <a class="nav-item nav-link" href="/php/sign_out.php">Sign Out</a>
+                <a class="nav-item nav-link" href="/php/cart.php">View Cart</a>
+            <?php else: ?>
+                <a class="nav-item nav-link" href="/php/login.php">Login</a>
+            <?php endif; ?>
         </div>
-        <?php else: ?>
-            <a class="nav-link active text-light" href="/php/login.php">Login</a>
-        <?php endif; ?>
-
     </nav>
 </header>
-<h1>Login</h1>
-<form method="post">
-    <label>Username: <input type="text" name="username" required></label><br>
-    <label>Password: <input type="password" name="password" required></label><br>
-    <input type="submit" value="Login">
-</form>
-<?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
-<?php include 'includes/footer.php'; ?>
+
+<main class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-4 text-center">Login</h2>
+            <?php if (isset($error)): ?>
+                <div class="alert alert-danger"><?= $error ?></div>
+            <?php endif; ?>
+            <form method="post">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" name="username" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" name="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+        </div>
+    </div>
 </main>
+
+<?php include 'includes/footer.php'; ?>
 </body>
 </html>
