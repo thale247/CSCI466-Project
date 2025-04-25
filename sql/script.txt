@@ -1,4 +1,4 @@
-USE z1986038;
+USE z1986037;
 
 DROP TABLE IF EXISTS Product_Order;
 DROP TABLE IF EXISTS `Order`;
@@ -110,7 +110,7 @@ INSERT INTO Product_Order VALUES
 (1, 1, 2),
 (2, 1, 1);
 
-UPDATE `Order` SET Order_Total = 700.00, Status = 'Complete' WHERE Order_Number = 1;
+UPDATE `Order` SET Order_Total = 700.00, Status = 'Delivered' WHERE Order_Number = 1;
 
 INSERT INTO Product_Order VALUES
 (3, 2, 3);
@@ -122,15 +122,15 @@ INSERT INTO Product_Order VALUES
 (6, 3, 5),
 (10, 3, 1);
 
-UPDATE `Order` SET Order_Total = 1660.42, Status = 'Complete' WHERE Order_Number = 3;
+UPDATE `Order` SET Order_Total = 1660.42, Status = 'Delivered' WHERE Order_Number = 3;
 
 INSERT INTO Product_Order VALUES
 (20, 4, 1);
 
-UPDATE `Order` SET Order_Total = 1200.00, Status = 'Complete' WHERE Order_Number = 4;
+UPDATE `Order` SET Order_Total = 1200.00, Status = 'Delivered' WHERE Order_Number = 4;
 
 INSERT INTO Product_Order VALUES
 (16, 5, 10),
 (18, 5, 20);
 
-UPDATE `Order` SET Order_Total = 869.70, Status = 'Shipping' WHERE Order_Number = 5;
+UPDATE `Order` SET Order_Total = 869.70, Status = 'Cancelled' WHERE Order_Number = 5;
