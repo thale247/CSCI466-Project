@@ -1,8 +1,8 @@
 <?php
-$host = 'courses';
-$dbname = ''; // FILL THESE IN FOR YOUR SERVER
-$username = '';
-$password = ''; 
+$host = '192.168.86.28';
+$dbname = 'z1986037'; // FILL THESE IN FOR YOUR SERVER
+$username = 'thomas';
+$password = 'ILikeCheese247!'; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
