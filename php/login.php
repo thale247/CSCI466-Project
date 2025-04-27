@@ -9,10 +9,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
-    if ($user && $user['Password'] === $password) { // Use password_verify() in production
+    if ($user && $user['Password'] === $password) {
         $_SESSION['username'] = $user['Username'];
-        header('Location: index.php');
-        exit;
+        if($user['Is_Admin']){
+            header('Location: admin_index.php');
+            exit;
+        }
+        else {
+            header('Location: index.php');
+            exit;
+        }
     } else {
         $error = "Invalid username or password.";
     }

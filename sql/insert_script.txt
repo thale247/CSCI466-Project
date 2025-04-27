@@ -21,11 +21,12 @@ INSERT INTO Product (Name, Price, In_Stock) VALUES
 ('Desktop PC', 1200.00, 5);
 
 INSERT INTO User VALUES
-('THale222', '123', 'test@gmail.com', 'Thomas', 'Hale'),
-('SaltNPepper', '123', 'fake@gmail.com', 'Bob', 'Croft'),
-('MyUser10', '123', 'these_arent_real@gmail.com', 'Greg', 'Dinsel'),
-('BoringName', '123', 'Maybe_they_Are@gmail.com', 'Scott', 'Pratt'),
-('PBJelly23', '123', 'Anyway@gmail.com', 'Preston', 'Belly');
+('THale222', '123', 'test@gmail.com', 'Thomas', 'Hale', FALSE),
+('SaltNPepper', '123', 'fake@gmail.com', 'Bob', 'Croft', FALSE),
+('MyUser10', '123', 'these_arent_real@gmail.com', 'Greg', 'Dinsel', FALSE),
+('BoringName', '123', 'Maybe_they_Are@gmail.com', 'Scott', 'Pratt', FALSE),
+('PBJelly23', '123', 'Anyway@gmail.com', 'Preston', 'Belly', FALSE),
+('admin', 'admin', 'admin@admin.com', 'Thomas', 'Hale', TRUE);
 
 INSERT INTO Shipping_Location (Username, Shipping_Addr, Apt_Suite, Zip, City, State) VALUES
 ('THale222', '123 market st.', '', 12345, 'Florence', 'PA'),

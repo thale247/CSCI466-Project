@@ -61,9 +61,9 @@ session_start(); ?>
 
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="index.php">Online Store</a>
+        <a class="navbar-brand" href="/php/index.php">Online Store</a>
         <div class="navbar-nav">
-            <a class="nav-item nav-link" href="index.php">Shop For Items</a>
+            <a class="nav-item nav-link" href="/php/index.php">Shop For Items</a>
             <?php if (isset($_SESSION['username'])): ?>
                 <a class="nav-item nav-link" href="/php/orders.php">Orders</a>
                 <a class="nav-item nav-link" href="/php/sign_out.php">Sign Out</a>
