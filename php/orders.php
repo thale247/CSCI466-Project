@@ -14,7 +14,6 @@ $stmt->execute([$username]);
 $order = $stmt->fetch();
 
 if ($order) {
-    $orderNumber = $order['Order_Number'];
     $stmt = $pdo->prepare("SELECT `Order_DateTime`, `Loc_ID`, `Order_Total`, `Status` FROM `Order` WHERE `Username` = ?");
     $stmt->execute([$username]);
     $items = $stmt->fetchAll();
