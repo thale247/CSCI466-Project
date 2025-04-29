@@ -83,7 +83,9 @@ session_start(); ?>
             echo "<div class='col-md-6 col-lg-4 mb-4'>
                     <div class='card h-100'>
                         <div class='card-body d-flex flex-column'>
-                            <h5 class='card-title'>{$row['Name']}</h5>
+                            <h5 class='card-title'>
+                                <a href='product_details.php?id={$row['Product_ID']}' class='text-dark'>{$row['Name']}</a>
+                            </h5>
                             <p class='card-subtitle mb-3 text-muted'>Price: \${$row['Price']}</p>
                             <form method='post' class='mt-auto'>
                                 <input type='hidden' name='product_id' value='{$row['Product_ID']}'>

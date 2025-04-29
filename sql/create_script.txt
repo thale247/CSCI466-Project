@@ -26,7 +26,8 @@ CREATE TABLE Product (
 Product_ID INT PRIMARY KEY AUTO_INCREMENT,
 Name VARCHAR(255) NOT NULL,
 Price DECIMAL(10,2) NOT NULL,
-In_Stock INT NOT NULL);
+In_Stock INT NOT NULL,
+Description VARCHAR(255));
 
 CREATE TABLE Contains (
 Cart_Number INT NOT NULL,
@@ -52,6 +53,8 @@ Username VARCHAR(255) NOT NULL,
 Loc_ID INT NOT NULL,
 Order_Total DECIMAL(10,2),
 Status VARCHAR(255),
+Notes VARCHAR(255),
+Tracking_Number VARCHAR(255),
 Order_DateTime DATETIME NOT NULL,
 FOREIGN KEY (Username) REFERENCES User(Username),
 FOREIGN KEY (Loc_ID) REFERENCES Shipping_Location(Loc_ID));

@@ -1,24 +1,24 @@
-INSERT INTO Product (Name, Price, In_Stock) VALUES
-('Rocket Launcher', 200.00, 10),
-('Casio Watch', 300.00, 50),
-('Digital Camera', 500.00, 100),
-('Walkman', 150.99, 5),
-('iPhone 16', 799.99, 20),
-('USB Drive', 10.99, 999),
-('Bucket Hat', 24.99, 60),
-('USB-C to USB-C Cable', 19.99, 43),
-('USB-C to USB-A Cable', 9.99, 67),
-('USB-A to USB-C Adapter', 5.49, 2),
-('Reusable Bag', 2.00, 1000),
-('Water Bottle', 1.00, 2000),
-('PS5 Controller', 69.99, 5),
-('XBOX Controller', 59.99, 7),
-('Scotch Tape', 4.99, 9),
-('Packing Tape', 6.99, 89),
-('USB Mouse', 29.99, 13),
-('Bluetooth Mouse', 39.99, 23),
-('Gaming Laptop', 999.99, 2),
-('Desktop PC', 1200.00, 5);
+INSERT INTO Product (Name, Price, In_Stock, Description) VALUES
+('Rocket Launcher', 200.00, 10, 'A rocket Launcher, need I say more?'),
+('Casio Watch', 300.00, 50, 'A classic...'),
+('Digital Camera', 500.00, 100, 'Like a film camera... sans film'),
+('Walkman', 150.99, 5, 'They still make these, y\'know? They are digital now though'),
+('iPhone 16', 799.99, 20, '16, 17, 18, 19... when does it stop?'),
+('USB Drive', 10.99, 999, '64GB'),
+('Bucket Hat', 24.99, 60, 'looks like a bucket, really is a hat'),
+('USB-C to USB-C Cable', 19.99, 43, 'Standard USB-C cable'),
+('USB-C to USB-A Cable', 9.99, 67, 'For all of your USB-A hubs'),
+('USB-A to USB-C Adapter', 5.49, 2, 'Converts USB-A to USB-C'),
+('Reusable Bag', 2.00, 1000, 'You can use it at least twice'),
+('Water Bottle', 1.00, 2000, 'holds water'),
+('PS5 Controller', 69.99, 5, 'Wayyyyyy overpriced, but its a cool controller'),
+('XBOX Controller', 59.99, 7, 'Not as expensive, not as cool'),
+('Scotch Tape', 4.99, 9, 'sticky'),
+('Packing Tape', 6.99, 89, 'sticky'),
+('USB Mouse', 29.99, 13, 'has rgb'),
+('Bluetooth Mouse', 39.99, 23, 'has rgb'),
+('Gaming Laptop', 999.99, 2, 'Nvidia RTX3070, Intel Core I9'),
+('Desktop PC', 1200.00, 5, 'probably better than the laptop you\'re thinking about');
 
 INSERT INTO User VALUES
 ('THale222', '123', 'test@gmail.com', 'Thomas', 'Hale', FALSE),
@@ -35,12 +35,12 @@ INSERT INTO Shipping_Location (Username, Shipping_Addr, Apt_Suite, Zip, City, St
 ('BoringName', '12 Second ave.', 'Apt 1', 23954, 'Kenosha', 'WI'),
 ('PBJelly23', '1 Maria ct.', '', 34278, 'Waverly', 'IA');
 
-INSERT INTO `Order` (Loc_ID, Username, Order_Total, Status, Order_DateTime) VALUES
-(1, 'THale222', 0.00, 'Created', '2024-02-28 18:24:05'),
-(2, 'SaltNPepper', 0.00, 'Created', '2024-01-10 10:10:10'),
-(3, 'MyUser10', 0.00, 'Created', '2024-03-13 12:00:15'),
-(4, 'BoringName', 0.00, 'Created', '2024-04-20 09:13:00'),
-(5, 'PBJelly23', 0.00, 'Created', '2025-01-05 08:20:32');
+INSERT INTO `Order` (Loc_ID, Tracking_Number, Username, Order_Total, Status, Order_DateTime) VALUES
+(1, '234535-213', 'THale222', 0.00, 'Created', '2024-02-28 18:24:05'),
+(2, '232311-213', 'SaltNPepper', 0.00, 'Created', '2024-01-10 10:10:10'),
+(3, '295837-294', 'MyUser10', 0.00, 'Created', '2024-03-13 12:00:15'),
+(4, '128437-291', 'BoringName', 0.00, 'Created', '2024-04-20 09:13:00'),
+(5, '209817-233', 'PBJelly23', 0.00, 'Created', '2025-01-05 08:20:32');
 
 INSERT INTO Product_Order VALUES
 (1, 1, 2),

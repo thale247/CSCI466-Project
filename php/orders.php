@@ -14,7 +14,7 @@ $stmt->execute([$username]);
 $order = $stmt->fetch();
 
 if ($order) {
-    $stmt = $pdo->prepare("SELECT `Order_DateTime`, `Loc_ID`, `Order_Total`, `Status` FROM `Order` WHERE `Username` = ?");
+    $stmt = $pdo->prepare("SELECT `Order_Number`, `Tracking_Number`, `Order_DateTime`, `Loc_ID`, `Order_Total`, `Status` FROM `Order` WHERE `Username` = ?");
     $stmt->execute([$username]);
     $items = $stmt->fetchAll();
 } else {
@@ -51,30 +51,32 @@ if ($order) {
     </header>
 
     <main class="container mt-5">
-        <h1 class="mb-4">Pending Orders</h1>
+        <h1 class="mb-4">Your Orders</h1>
 
         <?php if (count($items) === 0): ?>
             <div class="alert alert-info">No current orders available.</div>
         <?php else: ?>
             <table class="table table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Order Date & Time</th>
-                        <th>Track Location</th>
-                        <th>Status</th>
-                        <th>Total Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($items as $item): ?>
-                        <tr>
-                            <td><?= $item['Order_DateTime'] ?></td>
-                            <td><a href="#"><?= $item['Loc_ID'] ?></td>
-                            <td><?= htmlspecialchars($item['Status']) ?></td>
-                            <td>$<?= number_format($item['Order_Total'], 2) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
+            <thead class="thead-dark">
+                <tr>
+                    <th>Order #</th>
+                    <th>Tracking #</th>
+                    <th>Order Date & Time</th>
+                    <th>Status</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($items as $item): ?>
+                <tr>
+                    <td><a href="order_details.php?order_id=<?= $item['Order_Number'] ?>"><?= $item['Order_Number'] ?></a></td>
+                    <td><a href=""><?= $item['Tracking_Number'] ?></a></td>
+                    <td><?= $item['Order_DateTime'] ?></td>
+                    <td><?= htmlspecialchars($item['Status']) ?></td>
+                    <td>$<?= number_format($item['Order_Total'], 2) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
             </table>
         <?php endif; ?>
     </main>
