@@ -84,7 +84,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $pdo->prepare("DELETE FROM Contains WHERE Cart_Number = ?")->execute([$cart_number]);
             $pdo->prepare("UPDATE Cart SET Cart_Total = 0.00 WHERE Cart_Number = ?")->execute([$cart_number]);
 
-            header("Location: index.php");
+            $last_four = substr($_POST['cardnumber'], -4);
+            $_SESSION['last_four'] = $last_four;
+            header("Location: order_complete.php?order_id=$order_id");
             exit();
         } catch (PDOException $e) {
             $error = "Checkout failed: " . $e->getMessage();
