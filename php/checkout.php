@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $loc_id = $pdo->lastInsertId();
 
             // Insert order
-            $stmt = $pdo->prepare("INSERT INTO `Order` (Username, Loc_ID, Order_Total, Status, Order_DateTime) VALUES (?, ?, ?, 'Created', NOW())");
+            $stmt = $pdo->prepare("INSERT INTO `Order` (Username, Loc_ID, Order_Total, Status, Order_DateTime) VALUES (?, ?, ?, 'Processing', NOW())");
             $stmt->execute([$username, $loc_id, $cart_total]);
             $order_id = $pdo->lastInsertId();
 

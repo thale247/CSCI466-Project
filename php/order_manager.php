@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <th>Order Total</th>
                             <th>Order Date</th>
                             <th>Status</th>
-                            <th>Notes</th>
+                            <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,16 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <?= htmlspecialchars($item['Status']) ?>
                                     <form method="post" class="form-inline">
                                         <input type="hidden" name="Order_Number" value="<?= $item['Order_Number'] ?>">
-                                        <button class="btn btn-success btn-sm" type="submit" name="mark_shipped">Mark as Shipped</button>
                                     </form>
                                 </td>
                                 <td>
-                                    <form method="post" class="form-inline">
-                                        <input type="hidden" name="Order_Number" value="<?= $item['Order_Number'] ?>">
-                                        <input type="text" class="form-control mr-2" name="notes" value="<?= ($item['Notes']) ?>" style="width: 200px;">
-                                        <button class="btn btn-primary btn-sm" type="submit" name="update_notes">Update Notes</button>
-                                    </form>
+                                    <a href="edit_order.php?order=<?= $item['Order_Number'] ?>" class="btn btn-info btn-sm">Edit</a>
                                 </td>
+
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
