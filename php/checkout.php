@@ -44,6 +44,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $error = "Please fill out all required address fields.";
     } else {
         try {
+
+            $stmt = $pdo->prepare("SELECT In_Stock FROM Product WHERE Product_ID = ?");
+            foreach ($items as $item) {
+                $stmt->execute([$item['Product_ID']]);
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+                if (!$result) {
+                    throw new Exception("Product not found: " . htmlspecialchars($item['Product_ID']));
+                }
+            
+                if ($item['Quantity'] > $result['In_Stock']) {
+                    throw new Exception("Not enough stock for " . htmlspecialchars($item['Name']) . ". Only {$result['In_Stock']} left.");
+                }
+            }
+            
             // Insert shipping location
             $stmt = $pdo->prepare("INSERT INTO Shipping_Location (Username, Shipping_Addr, Apt_Suite, Zip, City, State) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->execute([$username, $address, $apt, $zip, $city, $state]);
@@ -60,6 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $stmt->execute([$item['Product_ID'], $order_id, $item['Quantity']]);
             }
 
+            $stmt = $pdo->prepare("UPDATE Product SET In_Stock = In_Stock - ? WHERE Product_ID = ?");
+            foreach ($items as $item) {
+                $stmt->execute([$item['Quantity'], $item['Product_ID']]);
+            }
+
             // Clear cart
             $pdo->prepare("DELETE FROM Contains WHERE Cart_Number = ?")->execute([$cart_number]);
             $pdo->prepare("UPDATE Cart SET Cart_Total = 0.00 WHERE Cart_Number = ?")->execute([$cart_number]);
@@ -67,6 +87,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             header("Location: index.php");
             exit();
         } catch (PDOException $e) {
+            $error = "Checkout failed: " . $e->getMessage();
+        } catch (Exception $e) {
             $error = "Checkout failed: " . $e->getMessage();
         }
     }

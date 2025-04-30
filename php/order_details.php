@@ -9,7 +9,7 @@ if (!isset($_SESSION['username'])) {
 
 $orderId = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
 
-$stmt = $pdo->prepare("SELECT o.Order_Number, o.Tracking_Number, o.Order_DateTime, o.Status, o.Order_Total, s.Shipping_Addr, s.City, s.State, s.Zip
+$stmt = $pdo->prepare("SELECT o.Order_Number, o.Tracking_Number, o.Order_DateTime, o.Status, o.Order_Total, s.Apt_Suite, s.Shipping_Addr, s.City, s.State, s.Zip
                        FROM `Order` o
                        JOIN Shipping_Location s ON o.Loc_ID = s.Loc_ID
                        WHERE o.Order_Number = ? AND o.Username = ?");
@@ -59,6 +59,7 @@ $products = $productStmt->fetchAll();
     <p><strong>Total:</strong> $<?= number_format($order['Order_Total'], 2) ?></p>
     <p><strong>Shipping Address:</strong><br>
         <?= htmlspecialchars($order['Shipping_Addr']) ?><br>
+        <?= htmlspecialchars($order['Apt_Suite']) ?><br>
         <?= htmlspecialchars($order['City']) ?>, <?= $order['State'] ?> <?= $order['Zip'] ?>
     </p>
 
