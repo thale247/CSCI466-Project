@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $pdo->prepare("DELETE FROM Contains WHERE Cart_Number = ?")->execute([$cart_number]);
             $pdo->prepare("UPDATE Cart SET Cart_Total = 0.00 WHERE Cart_Number = ?")->execute([$cart_number]);
 
-            echo "<p>Order submitted successfully! Your order number is #$order_id.</p>";
+            header("Location: index.php");
             exit();
         } catch (PDOException $e) {
             $error = "Checkout failed: " . $e->getMessage();
@@ -74,41 +74,119 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Checkout</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
 </head>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="index.php">Online Store</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="index.php">Shop For Items</a>
+            <?php if (isset($_SESSION['username'])): ?>
+                <a class="nav-item nav-link" href="/php/orders.php">Orders</a>
+                <a class="nav-item nav-link" href="/php/sign_out.php">Sign Out</a>
+                <a class="nav-item nav-link" href="/php/cart.php">View Cart</a>
+            <?php else: ?>
+                <a class="nav-item nav-link" href="/php/login.php">Login</a>
+            <?php endif; ?>
+        </div>
+    </nav>
+</header>
+<main>
 <body>
-<h2>Checkout</h2>
+<div class="container mt-5">
+    <h2 class="mb-4">Checkout</h2>
 
-<?php if ($error): ?>
-    <p style="color:red"><?= htmlspecialchars($error) ?></p>
-<?php endif; ?>
+    <?php if ($error): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+    <?php endif; ?>
 
-<h3>Your Cart</h3>
-<ul>
-    <?php foreach ($items as $item): ?>
-        <li><?= htmlspecialchars($item['Name']) ?> - $<?= number_format($item['Price'], 2) ?> x <?= $item['Quantity'] ?></li>
-    <?php endforeach; ?>
-</ul>
-<p><strong>Total:</strong> $<?= number_format($cart_total, 2) ?></p>
+    <div class="row">
+        <!-- Cart Summary -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    Your Cart
+                </div>
+                <ul class="list-group list-group-flush">
+                    <?php foreach ($items as $item): ?>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <?= htmlspecialchars($item['Name']) ?>
+                            <span>$<?= number_format($item['Price'], 2) ?> x <?= $item['Quantity'] ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+                <div class="card-footer text-right">
+                    <strong>Total:</strong> $<?= number_format($cart_total, 2) ?>
+                </div>
+            </div>
+        </div>
 
-<h3>Shipping Address</h3>
-<form method="post">
-    <label>Address: <input type="text" name="address" required></label><br>
-    <label>Apt/Suite: <input type="text" name="apt"></label><br>
-    <label>ZIP Code: <input type="text" name="zip" required></label><br>
-    <label>City: <input type="text" name="city" required></label><br>
-    <label>State: <input type="text" name="state" required></label><br><br>
+        <!-- Shipping + Billing Form -->
+        <div class="col-md-6">
+            <form method="post">
+                <div class="card mb-4">
+                    <div class="card-header bg-dark text-white">Shipping Address</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="address">Address *</label>
+                            <input type="text" class="form-control" id="address" name="address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="apt">Apt/Suite</label>
+                            <input type="text" class="form-control" id="apt" name="apt">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="zip">ZIP Code *</label>
+                                <input type="text" class="form-control" id="zip" name="zip" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="city">City *</label>
+                                <input type="text" class="form-control" id="city" name="city" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="state">State *</label>
+                                <input type="text" class="form-control" id="state" name="state" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <h3>Billing Information (FAKE)</h3>
-    <label>Name on Card: <input type="text" name="cardname"></label><br>
-    <label>Card Number: <input type="text" name="cardnumber"></label><br>
-    <label>Expiration Date: <input type="text" name="exp"></label><br>
-    <label>CVV: <input type="text" name="cvv"></label><br><br>
+                <div class="card mb-4">
+                    <div class="card-header bg-dark text-white">Billing Info (Fake)</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="cardname">Name on Card</label>
+                            <input type="text" class="form-control" id="cardname" name="cardname">
+                        </div>
+                        <div class="form-group">
+                            <label for="cardnumber">Card Number</label>
+                            <input type="text" class="form-control" id="cardnumber" name="cardnumber">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="exp">Expiration Date</label>
+                                <input type="text" class="form-control" id="exp" name="exp">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="cvv">CVV</label>
+                                <input type="text" class="form-control" id="cvv" name="cvv">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <button type="submit">Place Order</button>
-</form>
-
+                <button type="submit" class="btn btn-success btn-block">Place Order</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
+</main>
 </html>
