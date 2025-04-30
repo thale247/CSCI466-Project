@@ -41,7 +41,7 @@ $items = $stmt->fetchAll();
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/php/admin_index.php">Admin Home</a>
         <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/php/admin_index.php">Admin Home</a>
+            <a class="nav-item nav-link" href="/php/admin_index.php">Dashboard</a>
             <?php if (isset($_SESSION['username'])): ?>
                 <a class="nav-item nav-link" href="/php/inventory.php">Inventory</a>
                 <a class="nav-item nav-link" href="/php/order_manager.php">Manage Orders</a>
