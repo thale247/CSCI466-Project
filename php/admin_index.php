@@ -25,7 +25,7 @@ include 'db_connect.php';
             <a class="nav-item nav-link" href="/php/admin_index.php">Dashboard</a>
             <?php if (isset($_SESSION['username'])): ?>
                 <a class="nav-item nav-link" href="/php/inventory.php">Inventory</a>
-                <a class="nav-item nav-link" href="/php/order_manager.php">Orders</a>
+                <a class="nav-item nav-link" href="/php/order_manager.php">Manage Orders</a>
                 <a class="nav-item nav-link" href="/php/sign_out.php">Sign Out</a>
             <?php else: ?>
                 <a class="nav-item nav-link" href="/php/login.php">Login</a>
